@@ -1,16 +1,14 @@
 input {
-  udp { port => 5000 codec => json }
+  udp { port => 5000 type => "logstash" }
 }
 
 filter {
 
-  if [type] == "json" {
+  if [type] == "logstash" {
     json {
       source => "message"
     }
-    mutate {
-      rename => [ "log", "message" ]
-    }
+
     date {
       match => [ "time", "ISO8601" ]
     }
