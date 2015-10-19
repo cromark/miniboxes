@@ -2,6 +2,21 @@ input {
   udp { port => 5000 codec => json }
 }
 
+filter {
+
+  if [type] == "json" {
+    json {
+      source => "message"
+    }
+    mutate {
+      add_tag => [ "foo_%{message}" , "foo_%{message.message}",  "foo_%{message.docker.id}" ]
+    }
+    date {
+      match => [ "time", "ISO8601" ]
+    }
+  }
+}
+
 output {
   stdout {
     codec => rubydebug
