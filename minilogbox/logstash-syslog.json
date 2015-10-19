@@ -25,6 +25,18 @@ filter {
       match => [ "time", "ISO8601" ]
     }
   }
+  
+  if [type] == "json" {
+    json {
+      source => "message"
+    }
+    mutate {
+      rename => [ "log", "message" ]
+    }
+    date {
+      match => [ "time", "ISO8601" ]
+    }
+  }
 }
 
 output {
