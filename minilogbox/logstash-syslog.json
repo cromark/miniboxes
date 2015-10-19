@@ -1,8 +1,16 @@
 input {
-  udp {
-    port => 5000
-    type => json
+
+  file {
+    type => "syslog"
+    path => [ "/var/log/*.log", "/var/log/messages", "/var/log/syslog" ]
   }
+
+  file {
+    type => "logstash"
+    path => [ "/var/log/logstash/logstash.log" ]
+    start_position => "beginning"
+  }
+  udp { port => 5000 codec => json }
 }
 
 filter {
@@ -20,10 +28,13 @@ filter {
 }
 
 output {
-    elasticsearch {
+  stdout {
+    codec => rubydebug
+  }
+
+  elasticsearch {
     host => "127.0.0.1"
     port => "9200"
     protocol => "http"
   }
-  #stdout { codec => rubydebug }
 }
