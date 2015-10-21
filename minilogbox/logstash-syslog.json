@@ -1,12 +1,21 @@
 input {
-  udp { port => 5000 codec => json }
+  udp { port => 5000 codec => "json" }
 }
 
 filter {
 
+  if [type] == "docker" {
     json {
       source => "message"
     }
+    mutate {
+      rename => [ "log", "message" ]
+    }
+    date {
+      match => [ "time", "ISO8601" ]
+    }
+  }
+
 
 }
 
