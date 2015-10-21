@@ -1,14 +1,8 @@
 input {
-  udp { port => 5000 type => "logspout" }
+  udp { port => 5000 type => "logspout" codec => "json" }
 }
 
 filter {
-
-  if [type] == "logspout" {
-    json {
-      source => "message"
-    }
-  }
 
 }
 
