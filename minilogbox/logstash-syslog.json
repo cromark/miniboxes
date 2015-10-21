@@ -4,7 +4,7 @@ input {
 
 filter {
 
-  if [type] == "docker" {
+  if [type] == "json" {
     json {
       source => "message"
     }
