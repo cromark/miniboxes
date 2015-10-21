@@ -1,21 +1,14 @@
 input {
-  udp { port => 5000 codec => "json" }
+  udp { port => 5000 type => "logspout" }
 }
 
 filter {
 
-  if [type] == "json" {
+  if [type] == "logspout" {
     json {
       source => "message"
     }
-    mutate {
-      rename => [ "log", "message" ]
-    }
-    date {
-      match => [ "time", "ISO8601" ]
-    }
   }
-
 
 }
 
